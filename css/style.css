@@ -57,3 +57,11 @@ input[type=range] {
   height: 11px;
   background: #000 url(data:image/bmp;base64,Qk1iAAAAAAAAADYAAAAoAAAAAQAAAPX///8BACAAAAAAAAAAAAATCwAAEwsAAAAAAAAAAAAAAAAA/wAAAP8AAAD/AAAA/wAAAP//////AAAA/wAAAP8AAAD/AAAA/wAAAP8=) repeat-x center;
 }
+
+footer {
+  position: fixed;
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
+  font-size: 12px;
+}
