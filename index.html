@@ -1,0 +1,128 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="css/style.css" type="text/css" />
+    <script type="text/javascript" src="js/glMatrix-0.9.5.min.js"></script>
+    <script type="text/javascript" src="js/webgl-utils.js"></script>
+    <script type="text/javascript" src="js/cube.js"></script>
+    <script type="text/javascript" src="js/application.js"></script>
+
+    <script id="shader-fs" type="x-shader/x-fragment">
+      precision mediump float;
+
+      varying vec2 vTextureCoord;
+      varying vec3 vLightWeighting;
+
+      uniform float uAlpha;
+
+      uniform sampler2D uSampler;
+
+      void main(void) {
+        vec4 textureColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+        gl_FragColor = vec4(textureColor.rgb * vLightWeighting, textureColor.a * uAlpha);
+      }
+    </script>
+
+    <script id="shader-vs" type="x-shader/x-vertex">
+      attribute vec3 aVertexPosition;
+      attribute vec3 aVertexNormal;
+      attribute vec2 aTextureCoord;
+
+      uniform mat4 uMVMatrix;
+      uniform mat4 uPMatrix;
+      uniform mat3 uNMatrix;
+
+      uniform vec3 uAmbientColor;
+
+      uniform vec3 uLightingDirection;
+      uniform vec3 uDirectionalColor;
+
+      uniform bool uUseLighting;
+
+      varying vec2 vTextureCoord;
+      varying vec3 vLightWeighting;
+
+      void main(void) {
+        gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+        vTextureCoord = aTextureCoord;
+
+        if (!uUseLighting) {
+          vLightWeighting = vec3(1.0, 1.0, 1.0);
+        } else {
+          vec3 transformedNormal = uNMatrix * aVertexNormal;
+          float directionalLightWeighting = max(dot(transformedNormal, uLightingDirection), 0.0);
+          vLightWeighting = uAmbientColor + uDirectionalColor * directionalLightWeighting;
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="wrapper">
+      <canvas id="canvas" width="500" height="500"></canvas>
+
+      <form>
+        <input type="checkbox" id="lighting" checked />
+        <label for="lighting">Use lighting</label>
+
+        <fieldset>
+          <legend>Directional light</legend>
+          <fieldset>
+            <legend>Direction:</legend>
+
+            <label for="lightDirectionX">X:</label>
+            <input type="range" id="lightDirectionX" value="-0.25" min="-1" max="1" step="0.01" />
+
+            <label for="lightDirectionX">Y:</label>
+            <input type="range" id="lightDirectionY" value="-0.25" min="-1" max="1" step="0.01" />
+
+            <label for="lightDirectionX">Z:</label>
+            <input type="range" id="lightDirectionZ" value="-0.25" min="-1" max="1" step="0.01" />
+          </fieldset>
+
+          <fieldset>
+            <legend>Colour:</legend>
+
+            <label for="directionalR">R:</label>
+            <input type="range" id="directionalR" value="0.8" min="0" max="1" step="0.01" />
+
+            <label for="directionalG">G:</label>
+            <input type="range" id="directionalG" value="0.8" min="0" max="1" step="0.01" />
+
+            <label for="directionalB">B:</label>
+            <input type="range" id="directionalB" value="0.8" min="0" max="1" step="0.01" />
+          </fieldset>
+        </fieldset>
+
+        <fieldset>
+          <legend>Ambient light</legend>
+          <fieldset>
+            <legend>Colour:</legend>
+
+            <label for="ambientR">R:</label>
+            <input type="range" id="ambientR" value="0.2" min="0" max="1" step="0.01" />
+
+            <label for="ambientG">G:</label>
+            <input type="range" id="ambientG" value="0.2" min="0" max="1" step="0.01" />
+
+            <label for="ambientB">B:</label>
+            <input type="range" id="ambientB" value="0.2" min="0" max="1" step="0.01" />
+          </fieldset>
+        </fieldset>
+      </form>
+
+      <form>
+        <input type="checkbox" id="blending" />
+        <label for="blending">Use blending</label>
+
+        <fieldset>
+          <legend>Blending</legend>
+          <fieldset>
+            <legend>Alpha colour:</legend>
+
+            <label for="alpha">A:</label>
+            <input type="range" id="alpha" value="0.5" min="0" max="1" step="0.01" />
+          </fieldset>
+        </fieldset>
+      </form>
+    </div>
+  </body>
+</html>

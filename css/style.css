@@ -1,0 +1,59 @@
+html, body {
+  background: black;
+  color: #ccc;
+  -webkit-font-smoothing: antialiased;
+}
+
+#wrapper {
+  position: absolute;
+  width: 920px;
+  height: 500px;
+  top: 50%;
+  left: 50%;
+  margin-top: -250px;
+  margin-left: -460px;
+}
+
+#canvas {
+  float: left;
+}
+
+form {
+  float: left;
+  width: 415px;
+}
+
+form:first-of-type {
+  margin-top: 40px;
+}
+
+fieldset {
+  margin: 0 0 20px;
+  border: 1px solid #111;
+  padding-top: 10px;
+  opacity: 0;
+  -webkit-transition: opacity 0.5s linear;
+}
+
+fieldset fieldset {
+  border: none;
+  margin: 0;
+  padding: 5px;
+}
+
+input[type=checkbox] {
+  margin-left: 15px;
+  margin-bottom: 15px;
+}
+
+input[type=checkbox]:checked ~ fieldset, input[type=checkbox]:checked ~ fieldset fieldset {
+  opacity: 1;
+}
+
+input[type=range] {
+  display: inline-block;
+  width: 100px;
+  -webkit-appearance: none !important;
+  height: 11px;
+  background: #000 url(data:image/bmp;base64,Qk1iAAAAAAAAADYAAAAoAAAAAQAAAPX///8BACAAAAAAAAAAAAATCwAAEwsAAAAAAAAAAAAAAAAA/wAAAP8AAAD/AAAA/wAAAP//////AAAA/wAAAP8AAAD/AAAA/wAAAP8=) repeat-x center;
+}
